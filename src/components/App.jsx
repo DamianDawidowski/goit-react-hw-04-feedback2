@@ -8,7 +8,7 @@ export class App extends Component {
   constructor() {
     super();
     this.state = {
-      good: 1,
+      good: 0,
       neutral: 0,
       bad: 0,
     };
@@ -22,8 +22,8 @@ export class App extends Component {
   };
 
   clickHandler = name => {
-    this.setState(lastState => ({
-      [name]: lastState[name] + 1,
+    this.setState(state => ({
+      [name]: state[name] + 1,
     }));
     console.log(this.state);
   };
