@@ -1,9 +1,9 @@
 import propTypes from 'prop-types';
 
-const Section = ({ title, childen }) => (
+const Section = ({ title, children }) => (
   <section>
     <h4> {title}</h4>
-    {childen}
+    {children}
   </section>
 );
 
