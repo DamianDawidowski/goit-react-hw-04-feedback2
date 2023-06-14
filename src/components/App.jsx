@@ -1,44 +1,45 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Statistics from './Statistics/Statistics';
 import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
 import Section from './Section/Section';
 import Notification from './Notification/Notification';
 
-export class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    };
-  }
-
-  countTotalFeedback = () => {
-    return this.state.good + this.state.neutral + this.state.bad;
-  };
-  countPositiveFeedbackPercentage = () => {
-    return Math.round((this.state.good / this.countTotalFeedback()) * 100);
+export function App() {
+  
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [positivePercentage, setPercentage] = useState(0);
+ 
+  const addPositiveFeedback = (evt) => {
+    setGood(good + 1);
   };
 
-  clickHandler = name => {
-    this.setState(state => ({
-      [name]: state[name] + 1,
-    }));
-    console.log(this.state);
+  const addNeutralFeedback = (evt) => {
+    setNeutral(neutral + 1);
   };
 
-  render() {
-    const { good, neutral, bad } = this.state;
-    const total = this.countTotalFeedback();
-    const positivePercentage = this.countPositiveFeedbackPercentage();
+  const addBadFeedback = (evt) => {
+    setBad(bad + 1);
+  };
+
+  useEffect(() => {
+    setTotal(good + neutral + bad);
+  }, [good, neutral, bad]);
+
+  useEffect(() => {
+    setPercentage(Math.round((good / total) * 100));
+  }, [good, total]);
+   
 
     return (
       <>
         <Section title="Please leave feedback">
           <FeedbackOptions
-            options={this.state}
-            onLeaveFeedback={this.clickHandler}
+          addPositiveFeedback={addPositiveFeedback}
+          addNeutralFeedback={addNeutralFeedback}
+          addBadFeedback={addBadFeedback}
           ></FeedbackOptions>
           {total === 0 ? (
             <Notification message="There is no feedback"></Notification>
@@ -55,4 +56,4 @@ export class App extends Component {
       </>
     );
   }
-}
+ 
